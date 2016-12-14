@@ -48,10 +48,17 @@ void QtAddressBookGUI::createWidgets()
     deleteContactButton = new QPushButton("Delete");
     deleteContactButton ->setIcon(QIcon("D:/ic5.jpg")) ;
 
+    findContactButton = new QPushButton("Find");
+    findContactField = new QLineEdit(" ");
+
+    findContactButton->setStyleSheet("QString::fromUtf8(background-color: rgb(255,0,255)");
+
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addWidget(newContactButton);
     buttonLayout->addWidget(editContactButton);
     buttonLayout->addWidget(deleteContactButton);
+    buttonLayout->addWidget(findContactField);
+    buttonLayout->addWidget(findContactButton);
 
     QVBoxLayout *rightSideLayout = new QVBoxLayout();
     rightSideLayout->addWidget(detailView);
@@ -75,7 +82,8 @@ void QtAddressBookGUI::createWidgets()
 
     connect(editContactButton, SIGNAL(clicked()),
             this, SLOT(editContact()));
-
+    connect(findContactButton, SIGNAL(clicked()),
+            this, SLOT(findContact()));
     //tell the sub-widgets to refresh their data from
     //
     //Will be emitted when the view is notified by
@@ -209,4 +217,12 @@ void QtAddressBookGUI::deleteContact()
         return;
     }
 }
+void QtAddressBookGUI::findContact()
+{
+    std::string nameTofind=findContactField->text().toStdString();
+    Contact::ContactId idOffinedItem=list->findList(nameTofind);
+    detailView->clear();
+    detailView->displayContact(idOffinedItem);
+}
+
 
